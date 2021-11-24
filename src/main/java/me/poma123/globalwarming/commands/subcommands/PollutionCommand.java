@@ -15,7 +15,7 @@ import org.bukkit.entity.Player;
 class PollutionCommand extends SubCommand {
 
     PollutionCommand(GlobalWarmingPlugin plugin, GlobalWarmingCommand cmd) {
-        super(plugin, cmd, "pollution", "Allows you to manually change the pollution amount", false);
+        super(plugin, cmd, "pollution", "允许你手动修改污染值", false);
     }
 
     @Override
@@ -28,22 +28,22 @@ class PollutionCommand extends SubCommand {
                     if (args[1].equalsIgnoreCase("get")) {
                         double pollution = TemperatureManager.fixDouble(PollutionManager.getPollutionInWorld(world), 2);
 
-                        sender.sendMessage(ChatColors.color("&bPollution amount in world &a" + world.getName() + "&b: &a" + pollution));
+                        sender.sendMessage(ChatColors.color("&b世界 &a" + world.getName() + " &b的污染值为: &a" + pollution));
                     } else if (args[1].equalsIgnoreCase("set")) {
                         if (args.length > 3) {
                             setPollution(sender, world, args);
                         } else {
-                            sender.sendMessage(ChatColors.color("&4Usage: &c/globalwarming pollution <set> <world> <amount>"));
+                            sender.sendMessage(ChatColors.color("&4用法: &c/globalwarming pollution <set> <world> <amount>"));
                         }
                     }
                 } else {
-                    sender.sendMessage(ChatColors.color("&4The plugin's functionality is disabled in the given world"));
+                    sender.sendMessage(ChatColors.color("&4该世界无法使用该指令"));
                 }
             } else {
-                sender.sendMessage(ChatColors.color("&4Usage: &c/globalwarming pollution <set|get> <world>"));
+                sender.sendMessage(ChatColors.color("&用法: &c/globalwarming pollution <set|get> <world>"));
             }
         } else {
-            sender.sendMessage(ChatColors.color("&4You do not have the required permission to do this"));
+            sender.sendMessage(ChatColors.color("&4你没有足够的权限执行此命令"));
         }
     }
 
@@ -52,13 +52,13 @@ class PollutionCommand extends SubCommand {
 
         if (amount > -1) {
             if (PollutionManager.setPollutionInWorld(world, amount)) {
-                sender.sendMessage(ChatColors.color("&bYou have changed the pollution value to '&a%newValue%&b' in world '&a%world%&b'").replace("%newValue%", amount + "").replace("%world%", world.getName()));
+                sender.sendMessage(ChatColors.color("&b已设置世界 '&a%world%&b' 的污染值为 '&a%newValue%&b'").replace("%newValue%", amount + "").replace("%world%", world.getName()));
             } else {
                 // This is nearly impossible, but let us check
-                sender.sendMessage(ChatColors.color("&4The plugin's functionality is disabled in the given world"));
+                sender.sendMessage(ChatColors.color("&4该世界无法使用该指令"));
             }
         } else {
-            sender.sendMessage(ChatColors.color("&4%amount% &cis not a valid amount").replace("%amount%", amount + ""));
+            sender.sendMessage(ChatColors.color("&4%amount% &c不是一个有效的值").replace("%amount%", amount + ""));
         }
     }
 

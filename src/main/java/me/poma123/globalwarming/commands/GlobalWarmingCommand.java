@@ -28,7 +28,7 @@ public class GlobalWarmingCommand implements CommandExecutor, Listener {
     }
 
     public void register() {
-        Validate.isTrue(!registered, "GlobalWarming's subcommands have already been registered!");
+        Validate.isTrue(!registered, "GlobalWarming 的指令已注册!");
 
         registered = true;
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
@@ -63,7 +63,7 @@ public class GlobalWarmingCommand implements CommandExecutor, Listener {
 
     public void sendHelp(@Nonnull CommandSender sender) {
         sender.sendMessage("");
-        sender.sendMessage(ChatColors.color("&aGlobalWarming &2v" + Slimefun.getVersion()));
+        sender.sendMessage(ChatColors.color("&a全球变暖 &2v" + Slimefun.getVersion()));
         sender.sendMessage("");
 
         for (SubCommand cmd : commands) {

@@ -49,7 +49,7 @@ public class Registry {
             if (biomes.getValue("default-biome-temperatures." + biome.name()) == null) {
                 biomes.setValue("default-biome-temperatures." + biome.name(), 15);
 
-                GlobalWarmingPlugin.getInstance().getLogger().log(Level.INFO, "Added missing biome \"{0}\" to biomes.yml with the temperature value of 15", biome);
+                GlobalWarmingPlugin.getInstance().getLogger().log(Level.INFO, "向 biomes.yml 添加缺失的生物群系 \"{0}\" ，温度为15", biome);
             }
         }
         biomes.save();
@@ -61,7 +61,7 @@ public class Registry {
             try {
                 defaultBiomeTemperatures.put(Biome.valueOf(biome), celsiusValue);
             } catch (IllegalArgumentException ex) {
-                GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "Could not load temperature \"{0}\" of the invalid biome \"{1}\"", new Object[] { celsiusValue, biome });
+                GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "生物群系 \"{1}\" 的默认温度无效 \"{0}\"", new Object[] { celsiusValue, biome });
             }
         }
 
@@ -72,7 +72,7 @@ public class Registry {
             try {
                 maxTemperatureDropsAtNight.put(Biome.valueOf(biome), celsiusValue);
             } catch (IllegalArgumentException ex) {
-                GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "Could not load temperature drop \"{0}\" of the invalid biome \"{1}\"", new Object[] { celsiusValue, biome });
+                GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "生物群系 \"{1}\" 的夜间降温值无效 \"{0}\"", new Object[] { celsiusValue, biome });
             }
         }
 
@@ -89,7 +89,7 @@ public class Registry {
             worldFilterType = WorldFilterType.valueOf(((String) cfg.getOrSetDefault("world-filter-type", "blacklist")).toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException ex) {
             worldFilterType = WorldFilterType.BLACKLIST;
-            GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "\"{0}\" is not a valid world filter type. Now using default value (blacklist)", new Object[] { cfg.getString("world-filter-type") });
+            GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "\"{0}\" 不是一个有效的世界过滤器类型。正在使用默认值 (blacklist)", new Object[] { cfg.getString("world-filter-type") });
         }
         
         worlds.addAll(cfg.getStringList("worlds"));
@@ -106,7 +106,7 @@ public class Registry {
                 double value = cfg.getDouble("pollution.production.machine-recipe-input-items." + id);
 
                 if (value <= 0.0) {
-                    GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "Could not load polluted item \"{0}\" with an invalid pollution value of \"{1}\"", new Object[] { id, value });
+                    GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "无法加载污染值为 \"{1}\" 的无效污染物品 \"{0}\"", new Object[] { id, value });
                     continue;
                 }
 
@@ -115,7 +115,7 @@ public class Registry {
                 } else if (SlimefunItem.getById(id) != null) {
                     pollutedSlimefunItems.put(id, value);
                 } else {
-                    GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "Could not load non-existent polluted item \"{0}\" with a pollution value of \"{1}\"", new Object[] { id, value });
+                    GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "无法加载污染值为 \"{1}\" 的不存在的污染物品 \"{0}\"", new Object[] { id, value });
                 }
             }
 
@@ -124,14 +124,14 @@ public class Registry {
                 double value = cfg.getDouble("pollution.production.machines." + id);
 
                 if (value <= 0.0) {
-                    GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "Could not load polluted machine \"{0}\" with an invalid pollution value of \"{1}\"", new Object[] { id, value });
+                    GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "无法加载污染值为 \"{1}\" 的无效污染机器 \"{0}\"", new Object[] { id, value });
                     continue;
                 }
 
                 if (SlimefunItem.getById(id) != null) {
                     pollutedSlimefunMachines.put(id, value);
                 } else {
-                    GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "Could not load non-existent polluted machine \"{0}\" with a pollution value of \"{1}\"", new Object[] { id, value });
+                    GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "无法加载污染值为 \"{1}\" 的不存在的污染机器 \"{0}\"", new Object[] { id, value });
                 }
             }
 
@@ -140,14 +140,14 @@ public class Registry {
                 double value = cfg.getDouble("pollution.absorption.machines." + id);
 
                 if (value <= 0.0) {
-                    GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "Could not load absorbent machine \"{0}\" with an invalid absorption value of \"{1}\"", new Object[] { id, value });
+                    GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "无法加载吸收值为 \"{1}\" 的无效吸收机器 \"{0}\"", new Object[] { id, value });
                     continue;
                 }
 
                 if (SlimefunItem.getById(id) != null) {
                     absorbentSlimefunMachines.put(id, value);
                 } else {
-                    GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "Could not load non-existent absorbent machine \"{0}\" with an absorption value of \"{1}\"", new Object[] { id, value });
+                    GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "无法加载吸收值为 \"{1}\" 的不存在的吸收机器 \"{0}\"", new Object[] { id, value });
                 }
             }
         }, 100);

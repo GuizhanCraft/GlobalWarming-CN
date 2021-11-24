@@ -10,9 +10,9 @@ import javax.annotation.ParametersAreNonnullByDefault;
  */
 public enum TemperatureType {
 
-    CELSIUS("Celsius", "°C"),
-    FAHRENHEIT("Fahrenheit", "°F"),
-    KELVIN("Kelvin", "K");
+    CELSIUS("摄氏度", "°C"),
+    FAHRENHEIT("华氏度", "°F"),
+    KELVIN("开尔文温度", "K");
 
     private final String name;
     private final String suffix;

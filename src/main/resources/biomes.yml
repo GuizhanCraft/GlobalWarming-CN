@@ -78,6 +78,9 @@ default-biome-temperatures:
   CRIMSON_FOREST: 34
   WARPED_FOREST: 34
   BASALT_DELTAS: 25
+  DRIPSTONE_CAVES: 15
+  LUSH_CAVES: 18
+  CUSTOM: 15
 max-temperature-drop-at-night:
   OCEAN: 12
   PLAINS: 10
@@ -158,3 +161,6 @@ max-temperature-drop-at-night:
   CRIMSON_FOREST: 0
   WARPED_FOREST: 0
   BASALT_DELTAS: 0
+  DRIPSTONE_CAVES: 15
+  LUSH_CAVES: 10
+  CUSTOM: 0

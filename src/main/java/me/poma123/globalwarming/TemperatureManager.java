@@ -71,13 +71,13 @@ public class TemperatureManager {
 
     public String getTemperatureString(@Nonnull Location loc, @Nonnull TemperatureType tempType) {
         if (!GlobalWarmingPlugin.getRegistry().isWorldEnabled(loc.getWorld().getName())) {
-            return "&cNon-functional in this world.";
+            return "&c该世界不可用";
         }
 
         Temperature temp = getTemperatureAtLocation(loc);
 
         if (temp == null) {
-            return "&7Measuring...";
+            return "&7正在测量中...";
         }
 
         double celsiusValue = temp.getCelsiusValue();
@@ -103,7 +103,7 @@ public class TemperatureManager {
 
     public String getAirQualityString(@Nonnull World world, @Nonnull TemperatureType tempType) {
         if (!GlobalWarmingPlugin.getRegistry().isWorldEnabled(world.getName()) || world.getEnvironment() != World.Environment.NORMAL) {
-            return "&cNon-functional in this world.";
+            return "&c该世界不可用";
         }
 
         Temperature temp = new Temperature(15.0);

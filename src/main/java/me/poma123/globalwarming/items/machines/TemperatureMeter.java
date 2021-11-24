@@ -47,7 +47,7 @@ public abstract class TemperatureMeter extends SlimefunItem implements HologramO
             public void onPlayerPlace(BlockPlaceEvent e) {
                 Block b = e.getBlockPlaced();
                 BlockStorage.addBlockInfo(b,"type", TemperatureType.CELSIUS.name());
-                updateHologram(b, "&7Measuring...");
+                updateHologram(b, "&7正在测量中...");
             }
         };
     }
@@ -69,7 +69,7 @@ public abstract class TemperatureMeter extends SlimefunItem implements HologramO
             }
 
             BlockStorage.addBlockInfo(b, "type", saved.name());
-            p.sendMessage("§7Temperature type: §e" + saved.getName());
+            p.sendMessage("§7温度单位: §e" + saved.getName());
 
             e.cancel();
         };

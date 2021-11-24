@@ -63,7 +63,7 @@ public class GlobalWarmingPlugin extends JavaPlugin implements SlimefunAddon {
             try {
                 Files.copy(this.getClass().getResourceAsStream("/biomes.yml"), biomesFile.toPath());
             } catch (IOException e) {
-                getLogger().log(Level.SEVERE, "Failed to create default biomes.yml file", e);
+                getLogger().log(Level.SEVERE, "无法创建默认配置 biomes.yml", e);
             }
         }
         biomes = new Config(this, "biomes.yml");
@@ -73,7 +73,7 @@ public class GlobalWarmingPlugin extends JavaPlugin implements SlimefunAddon {
             try {
                 Files.copy(this.getClass().getResourceAsStream("/messages.yml"), messagesFile.toPath());
             } catch (IOException e) {
-                getLogger().log(Level.SEVERE, "Failed to create default messages.yml file", e);
+                getLogger().log(Level.SEVERE, "无法创建默认配置 messages.yml", e);
             }
         }
         messages = new Config(this, "messages.yml");
@@ -89,7 +89,7 @@ public class GlobalWarmingPlugin extends JavaPlugin implements SlimefunAddon {
     }
 
     private void registerItems() {
-        ItemGroup itemGroup = new ItemGroup(new NamespacedKey(this, "global_warming"), new CustomItemStack(Items.THERMOMETER, "&2Global Warming"));
+        ItemGroup itemGroup = new ItemGroup(new NamespacedKey(this, "global_warming"), new CustomItemStack(Items.THERMOMETER, "&2全球变暖"));
 
         new TemperatureMeter(itemGroup, Items.THERMOMETER, RecipeType.ENHANCED_CRAFTING_TABLE, new ItemStack[] {
                 SlimefunItems.NICKEL_INGOT, new ItemStack(Material.GLASS), SlimefunItems.NICKEL_INGOT,
@@ -111,7 +111,7 @@ public class GlobalWarmingPlugin extends JavaPlugin implements SlimefunAddon {
             @Override
             public void tick(Block b) {
                 Location loc = b.getLocation();
-                updateHologram(b, "&7Climate change: " + GlobalWarmingPlugin.getTemperatureManager().getAirQualityString(loc.getWorld(), TemperatureType.valueOf(BlockStorage.getLocationInfo(loc, "type"))));
+                updateHologram(b, "&7环境变化: " + GlobalWarmingPlugin.getTemperatureManager().getAirQualityString(loc.getWorld(), TemperatureType.valueOf(BlockStorage.getLocationInfo(loc, "type"))));
             }
         }.register(this);
 
@@ -170,12 +170,12 @@ public class GlobalWarmingPlugin extends JavaPlugin implements SlimefunAddon {
     }
 
     private void registerResearches() {
-        registerResearch("thermometer", 69696969, "Thermometer", 10, Items.THERMOMETER);
-        registerResearch("air_quality_meter", 69696970, "Air Quality Meter", 30, Items.AIR_QUALITY_METER);
-        registerResearch("air_compressor", 69696971, "Air Compressor", 40, Items.AIR_COMPRESSOR);
-        registerResearch("canisters", 69696972, "Pollution storing", 6, Items.EMPTY_CANISTER, Items.CO2_CANISTER);
-        registerResearch("filter", 69696973, "Filter", 8, Items.FILTER);
-        registerResearch("mercury", 69696973, "Mercury", 12, Items.CINNABARITE, Items.MERCURY);
+        registerResearch("thermometer", 69696969, "温度计", 10, Items.THERMOMETER);
+        registerResearch("air_quality_meter", 69696970, "空气质量监测仪", 30, Items.AIR_QUALITY_METER);
+        registerResearch("air_compressor", 69696971, "空气压缩机", 40, Items.AIR_COMPRESSOR);
+        registerResearch("canisters", 69696972, "污染存储", 6, Items.EMPTY_CANISTER, Items.CO2_CANISTER);
+        registerResearch("filter", 69696973, "过滤", 8, Items.FILTER);
+        registerResearch("mercury", 69696973, "水银", 12, Items.CINNABARITE, Items.MERCURY);
     }
 
     private void scheduleTasks() {
@@ -236,7 +236,7 @@ public class GlobalWarmingPlugin extends JavaPlugin implements SlimefunAddon {
 
     @Override
     public String getBugTrackerURL() {
-        return "https://github.com/ybw0014/GlobalWarming/issues";
+        return "https://github.com/GuizhanCraft/GlobalWarming-CN/issues";
     }
 
     @Override
