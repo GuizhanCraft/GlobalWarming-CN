@@ -4,7 +4,8 @@
 
 该插件值得尝试，99% 可配置。
 
-## Navigation
+## 目录
+
 * [下载](#下载)
 * [配置](#配置)
 * [机制](#机制)
@@ -19,12 +20,12 @@
 点击这里下载 GlobalWarming: [下载 GlobalWarming](https://builds.guizhanss.net/GuizhanCraft/GlobalWarming-CN/master)
 
 <p align="center">
-  <a href="https://github.com/GuizhanCraft/GlobalWarming-CN/actions/workflows/maven.yml">
-    <img src="https://github.com/GuizhanCraft/GlobalWarming-CN/actions/workflows/maven.yml/badge.svg" alt="Java CI"/>
+  <a href="https://github.com/ybw0014/GlobalWarming-CN/actions/workflows/maven.yml">
+    <img src="https://github.com/ybw0014/GlobalWarming-CN/actions/workflows/maven.yml/badge.svg" alt="Java CI"/>
   </a>
 
-  <a href="https://builds.guizhanss.net/GuizhanCraft/GlobalWarming-CN/master">
-    <img src="https://builds.guizhanss.net/f/GuizhanCraft/GlobalWarming-CN/master/badge.svg" alt="Build status"/>
+  <a href="https://builds.guizhanss.net/ybw0014/GlobalWarming-CN/master">
+    <img src="https://builds.guizhanss.net/f/ybw0014/GlobalWarming-CN/master/badge.svg" alt="Build status"/>
   </a>
 </p>
 
