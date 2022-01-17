@@ -8,6 +8,7 @@
 
 * [下载](#下载)
 * [配置](#配置)
+  * [生物群系配置](#生物群系配置)
 * [机制](#机制)
   * [环境机制](#环境机制)
   * [污染机制](#污染机制)
@@ -39,6 +40,49 @@
 - 在 `temperature-options` 中，你可以设置环境温度的计算方式
 
 编辑文件后，请重启服务器使新配置生效!
+
+### 生物群系配置
+
+官方版构建#11，汉化版构建#2对配置文件进行了修改，以兼容MC1.18对生物群系的修改。  
+将不再使用`biomes.yml`来配置生物群系。
+
+在`/plugins/GlobalWarming/biome-maps/`目录中，可以看到2个版本的生物群系地图，分别是：
+
+- **pre-1.18.json**: MC1.17及以下版本的生物群系
+- **post-1.18.json**: MC1.18及以上版本的生物群系
+
+插件将根据服务器版本自动选择可用的生物群系地图。  
+如果生物群系地图配置不正确，将使用默认自带的数据。
+
+你可以参考以下示例来配置生物群系的温度和夜间降温幅度:
+
+<details>
+  <summary>生物群系地图配置示例</summary>
+ 
+  ```yaml
+   ...
+   {
+     {
+     "value": {
+       "temperature": 10,
+       "max-temp-drop-at-night": 14
+     },
+     "biomes": [
+       "minecraft:dripstone_caves"
+     ]
+   },
+   {
+     "value": {
+       "temperature": 19,
+       "max-temp-drop-at-night": 10
+     },
+     "biomes": [
+       "minecraft:lush_caves"
+     ]
+   },
+   ...
+  ```
+ </details>
 
 ## 机制
 

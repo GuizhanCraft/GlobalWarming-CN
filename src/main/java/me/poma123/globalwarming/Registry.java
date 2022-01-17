@@ -1,5 +1,10 @@
 package me.poma123.globalwarming;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
@@ -10,6 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -20,18 +26,22 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 
+import io.github.thebusybiscuit.slimefun4.api.MinecraftVersion;
+import io.github.thebusybiscuit.slimefun4.api.exceptions.BiomeMapException;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.researches.Research;
 import io.github.thebusybiscuit.slimefun4.implementation.Slimefun;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
+import io.github.thebusybiscuit.slimefun4.utils.biomes.BiomeMap;
 
+import me.poma123.globalwarming.api.biomes.BiomeTemperature;
+import me.poma123.globalwarming.api.biomes.BiomeTemperatureDataConverter;
 import me.poma123.globalwarming.api.WorldFilterType;
 
 public class Registry {
 
     private final List<String> news = new ArrayList<>();
-    private final Map<Biome, Double> defaultBiomeTemperatures = new EnumMap<>(Biome.class);
-    private final Map<Biome, Double> maxTemperatureDropsAtNight = new EnumMap<>(Biome.class);
+    private BiomeMap<BiomeTemperature> biomeMap;
     private final Set<String> enabledWorlds = new HashSet<>();
     private final Map<String, Config> worldConfigs = new HashMap<>();
     private final Map<Material, Double> pollutedVanillaItems = new EnumMap<>(Material.class);
@@ -46,37 +56,35 @@ public class Registry {
     private double animalBreedPollution;
     private Research researchNeededForPlayerMechanics = null;
 
-    public void load(Config cfg, Config biomes, Config messages) {
-        // Add missing biomes to the config
+    public void load(Config cfg, Config messages) {
+        // Setting up biome map
+        try {
+            this.biomeMap = loadBiomeMap(false);
+        }
+        catch (BiomeMapException | FileNotFoundException x) {
+            GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, x, () -> "无法加载生物群系地图 /plugins/GlobalWarming/biome-maps/, 使用默认设置");
+        }
+
+        if (biomeMap == null) {
+            try {
+                this.biomeMap = loadBiomeMap(true);
+            }
+            catch (BiomeMapException | FileNotFoundException x) {
+                GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, x, () -> "无法应用默认生物群系地图，请重新安装 GlobalWarming.");
+                GlobalWarmingPlugin.getInstance().getServer().getPluginManager().disablePlugin(GlobalWarmingPlugin.getInstance());
+            }
+        }
+
+        // Printing missing, unconfigured biomes
+        List<String> missingBiomes = new ArrayList<>();
         for (Biome biome : Biome.values()) {
-            if (biomes.getValue("default-biome-temperatures." + biome.name()) == null) {
-                biomes.setValue("default-biome-temperatures." + biome.name(), 15);
-
-                GlobalWarmingPlugin.getInstance().getLogger().log(Level.INFO, "向 biomes.yml 添加缺失的生物群系 \"{0}\" ，温度为15", biome);
+            if (!biomeMap.containsKey(biome)) {
+                missingBiomes.add(biome.toString());
             }
         }
-        biomes.save();
-
-        // Loading default biome temperatures
-        for (String biome : biomes.getKeys("default-biome-temperatures")) {
-            double celsiusValue = biomes.getDouble("default-biome-temperatures." + biome);
-
-            try {
-                defaultBiomeTemperatures.put(Biome.valueOf(biome), celsiusValue);
-            } catch (IllegalArgumentException ex) {
-                GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "生物群系 \"{1}\" 的默认温度无效 \"{0}\"", new Object[] { celsiusValue, biome });
-            }
-        }
-
-        // Loading night temperature drops
-        for (String biome : biomes.getKeys("max-temperature-drop-at-night")) {
-            double celsiusValue = biomes.getDouble("max-temperature-drop-at-night." + biome);
-
-            try {
-                maxTemperatureDropsAtNight.put(Biome.valueOf(biome), celsiusValue);
-            } catch (IllegalArgumentException ex) {
-                GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "生物群系 \"{1}\" 的夜间降温值无效 \"{0}\"", new Object[] { celsiusValue, biome });
-            }
+        if (!missingBiomes.isEmpty()) {
+            String path = biomeMap.getKey().getKey().replace("globalwarming_biomemap_", "");
+            GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "生物群系地图(\" + path + \")中，这些生物群系没有设置温度: \"{0}\"，将使用默认温度设置 (temp=15, max-temp-drop-at-night=0).", new Object[] {String.join(", ", missingBiomes)});
         }
 
         // Whitelisting or blacklisting worlds
@@ -88,13 +96,14 @@ public class Registry {
             cfg.save();
         }
 
+        // Setting up worlds
         try {
-            worldFilterType = WorldFilterType.valueOf(((String) cfg.getOrSetDefault("world-filter-type", "blacklist")).toUpperCase(Locale.ROOT));
+            worldFilterType = WorldFilterType.valueOf((cfg.getOrSetDefault("world-filter-type", "blacklist")).toUpperCase(Locale.ROOT));
         } catch (IllegalArgumentException ex) {
             worldFilterType = WorldFilterType.BLACKLIST;
             GlobalWarmingPlugin.getInstance().getLogger().log(Level.WARNING, "\"{0}\" 不是一个有效的世界过滤器类型。正在使用默认值 (blacklist)", new Object[] { cfg.getString("world-filter-type") });
         }
-        
+
         worlds.addAll(cfg.getStringList("worlds"));
 
         for (World w : Bukkit.getWorlds()) {
@@ -172,12 +181,25 @@ public class Registry {
         }
     }
 
-    public Map<Biome, Double> getDefaultBiomeTemperatures() {
-        return defaultBiomeTemperatures;
+    public BiomeMap<BiomeTemperature> loadBiomeMap(boolean internalResource) throws BiomeMapException, FileNotFoundException {
+        String path;
+        if (Slimefun.getMinecraftVersion().isAtLeast(MinecraftVersion.MINECRAFT_1_18)) {
+            path = "post-1.18.json";
+        } else {
+            path = "pre-1.18.json";
+        }
+
+        BufferedReader reader;
+        if (internalResource) {
+            reader = new BufferedReader(new InputStreamReader(GlobalWarmingPlugin.getInstance().getClass().getResourceAsStream("/biome-maps/" + path), StandardCharsets.UTF_8));
+        } else {
+            reader = new BufferedReader(new InputStreamReader(new FileInputStream(GlobalWarmingPlugin.getInstance().getDataFolder() + "/biome-maps/" + path), StandardCharsets.UTF_8));
+        }
+        return BiomeMap.fromJson(new NamespacedKey(GlobalWarmingPlugin.getInstance(), "globalwarming_biomemap_" + path), reader.lines().collect(Collectors.joining("")), new BiomeTemperatureDataConverter(), true);
     }
 
-    public Map<Biome, Double> getMaxTemperatureDropsAtNight() {
-        return maxTemperatureDropsAtNight;
+    public BiomeMap<BiomeTemperature> getBiomeMap() {
+        return biomeMap;
     }
 
     public boolean isWorldEnabled(@Nonnull String worldName) {
@@ -194,7 +216,8 @@ public class Registry {
                 enabledWorlds.add(worldName);
                 getWorldConfig(w);
             }
-        } else {
+        }
+        else {
             if (worlds.contains(worldName)) {
                 enabledWorlds.add(worldName);
                 getWorldConfig(w);
