@@ -1,33 +1,59 @@
+# 自动更新（汉化版暂时无效）
 options:
   auto-update: true
 
+# 启用或禁用的世界
 worlds:
 - disabled_world
 
+# 白名单 (whitelist) 或 黑名单 (blacklist) ，默认为黑名单模式
 world-filter-type: blacklist
 
+# 机制
 mechanics:
+  # 森林大火
   FOREST_FIRES:
+    # 是否启用
     enabled: true
+    # 几率 (0-1)
     chance: 0.3
+    # 火焰传播速度
     fire-per-second: 10
+    # 最低触发温度（摄氏度）
     min-temperature-in-celsius: 40.0
+  # 冰川融化
   ICE_MELTING:
+    # 是否启用
     enabled: true
+    # 几率 (0-1)
     chance: 0.5
+    # 融化速度
     melt-per-second: 10
+    # 最低触发温度（摄氏度）
     min-temperature-in-celsius: 2.0
+  # 减速
   SLOWNESS:
+    # 是否启用
     enabled: true
+    # 几率 (0-1)
     chance: 0.8
+  # 燃烧
   BURN:
+    # 是否启用
     enabled: true
+    # 几率
     chance: 0.8
 
+# 进行全球变暖研究需要解锁的前置研究
 needed-research-for-player-mechanics: ENERGY_REGULATOR
 
+# 污染设置
+# 机器相关ID可通过游戏内手持机器并使用指令/sf id查询
+# 原版物品ID: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
 pollution:
+  # 污染产生
   production:
+    # 机器输入会产生的污染
     machine-recipe-input-items:
       CHARCOAL: 0.0025
       COAL: 0.005
@@ -43,17 +69,23 @@ pollution:
       BLISTERING_INGOT: 0.025
       BLISTERING_INGOT_2: 0.027
       BLISTERING_INGOT_3: 0.03
+    # 机器运作产生的污染
     machines:
       COAL_GENERATOR: 0.001
       COAL_GENERATOR_2: 0.0015
       NUCLEAR_REACTOR: 0.03
       COMBUSTION_REACTOR: 0.015
+    # 喂养动物产生的污染
     animal-breed: 0.005
+  # 污染吸收
   absorption:
+    # 污染吸收机器
     machines:
       AIR_COMPRESSOR: 0.05
+    # 植树
     tree-growth: 0.005
 
+# 温度选项
 temperature-options:
   pollution-multiply: 0.002
   temperature-drop-during-storms: 8
