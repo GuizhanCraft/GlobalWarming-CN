@@ -1,5 +1,9 @@
 version: "1"
 rules:
   - base: master
-    upstream: ybw0014:master
+    upstream: poma123:master
     mergeMethod: merge
+    assignees:
+      - ybw0014
+    conflictReviewers:
+      - ybw0014
