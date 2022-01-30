@@ -4,8 +4,6 @@
 
 该插件值得尝试，99% 可配置。
 
-**更新**: 本插件已更新，兼容MC1.18对生物群系的改动，请使用构建#2及以上版本。需要重新进行配置。
-
 ## 目录
 
 * [下载](#下载)
@@ -19,6 +17,8 @@
 * [API](#api)
 
 ## 下载
+
+**自动更新**: 汉化版构建#4已包含自动更新功能，默认开启
 
 点击这里下载 GlobalWarming: [下载 GlobalWarming](https://builds.guizhanss.net/GuizhanCraft/GlobalWarming-CN/master)
 

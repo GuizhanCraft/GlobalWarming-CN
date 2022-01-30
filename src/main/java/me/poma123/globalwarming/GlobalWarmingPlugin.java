@@ -24,7 +24,6 @@ import io.github.thebusybiscuit.slimefun4.implementation.SlimefunItems;
 import io.github.thebusybiscuit.slimefun4.implementation.items.SimpleSlimefunItem;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.config.Config;
 import io.github.thebusybiscuit.slimefun4.libraries.dough.items.CustomItemStack;
-import io.github.thebusybiscuit.slimefun4.libraries.dough.updater.GitHubBuildsUpdater;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 
 import me.poma123.globalwarming.api.TemperatureType;
@@ -39,6 +38,8 @@ import me.poma123.globalwarming.tasks.FireTask;
 import me.poma123.globalwarming.tasks.MeltTask;
 import me.poma123.globalwarming.tasks.SlownessTask;
 
+import net.guizhanss.guizhanlib.updater.GuizhanBuildsUpdater;
+
 public class GlobalWarmingPlugin extends JavaPlugin implements SlimefunAddon {
 
     private static GlobalWarmingPlugin instance;
@@ -52,8 +53,9 @@ public class GlobalWarmingPlugin extends JavaPlugin implements SlimefunAddon {
     public void onEnable() {
         instance = this;
 
-        if (cfg.getBoolean("options.auto-update") && getDescription().getVersion().startsWith("DEV - ")) {
-            new GitHubBuildsUpdater(this, getFile(), "poma123/GlobalWarming/master").start();
+        if (getConfig().getBoolean("options.auto-update") &&
+            getDescription().getVersion().startsWith("Build")) {
+            new GuizhanBuildsUpdater(this, getFile(), "ybw0014", "GlobalWarming-CN", "master", false).start();
         }
 
         new Metrics(this, 9132);

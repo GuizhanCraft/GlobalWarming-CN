@@ -81,12 +81,16 @@
                 <version>3.2.4</version>
 
                 <configuration>
-
+                    <minimizeJar>true</minimizeJar>
                     <!-- Shade dependencies into the output jar -->
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
                             <shadedPattern>me.poma123.globalwarming.bstats</shadedPattern>
+                        </relocation>
+                        <relocation>
+                            <pattern>net.guizhanss.guizhanlib</pattern>
+                            <shadedPattern>me.poma123.globalwarming.guizhanlib</shadedPattern>
                         </relocation>
                     </relocations>
 
@@ -96,6 +100,7 @@
                             <artifact>*:*</artifact>
                             <excludes>
                                 <exclude>META-INF/*</exclude>
+                                <exclude>minecraft.*</exclude>
                             </excludes>
                         </filter>
                     </filters>
@@ -167,6 +172,13 @@
             <groupId>org.bstats</groupId>
             <artifactId>bstats-bukkit</artifactId>
             <version>3.0.0</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>net.guizhanss</groupId>
+            <artifactId>GuizhanLib</artifactId>
+            <version>0.5.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
